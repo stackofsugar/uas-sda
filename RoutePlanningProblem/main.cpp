@@ -7,10 +7,18 @@
 #include <map>
 using namespace std;
 
-struct AdjacencyVertex {
-    vector<int> adjacency_item;
-    string vertex_name;
-};
+// struct Coords {
+//     int coordX, coordY;
+
+//     Coords() {
+//         coordX = coordY = 0;
+//     }
+// };
+
+// struct AdjacencyVertex {
+//     vector<int> adjacency_item;
+//     string vertex_name;
+// };
 
 struct VInfo {
     int dist, parent;
@@ -131,65 +139,104 @@ vector<int> parseString(string str) {
 
 int main() {
     vector<vector<int>> adj_matrix = {
-        { 0,  4,  0,  0,  0,  0,  0,  8,  0 },
-        { 4,  0,  8,  0,  0,  0,  0,  11, 0 },
-        { 0,  8,  0,  7,  0,  4,  0,  0,  2 },
-        { 0,  0,  7,  0,  9,  14, 0,  0,  0 },
-        { 0,  0,  0,  9,  0,  10, 0,  0,  0 },
-        { 0,  0,  4,  0,  10, 0,  2,  0,  0 },
-        { 0,  0,  0,  14, 0,  2,  0,  1,  6 },
-        { 8,  11, 0,  0,  0,  0,  1,  0,  7 },
-        { 0,  0,  2,  0,  0,  0,  6,  7,  0 }
+        { 0,  0,  21, 0,  0,  32, 17, 10, 0,  0,  20, 0,  0,  0,  0  },
+        { 0,  0,  0,  0,  12, 0,  0,  0,  0,  0,  0,  16, 13, 0,  0  },
+        { 21, 0,  0,  0,  0,  14, 0,  0,  0,  0,  50, 17, 0,  19, 0  },
+        { 0,  0,  0,  0,  34, 0,  0,  0,  0,  0,  17, 0,  0,  0,  36 },
+        { 0,  12, 0,  34, 0,  0,  0,  0,  0,  0,  15, 30, 0,  0,  0  },
+        { 32, 0,  14, 0,  0,  0,  0,  21, 0,  9,  0,  0,  0,  0,  0  },
+        { 17, 0,  0,  0,  0,  0,  0,  0,  28, 0,  14, 0,  0,  0,  40 },
+        { 10, 0,  0,  0,  0,  21, 0,  0,  23, 11, 0,  0,  0,  0,  0  },
+        { 0,  0,  0,  0,  0,  0,  28, 23, 0,  40, 0,  0,  0,  0,  0  },
+        { 0,  0,  0,  0,  0,  9,  0,  11, 40, 0,  0,  0,  0,  27, 0  },
+        { 20, 0,  50, 17, 15, 0,  14, 0,  0,  0,  0,  27, 0,  0,  24 },
+        { 0,  16, 17, 0,  30, 0,  0,  0,  0,  0,  27, 0,  26, 0,  0  },
+        { 0,  13, 0,  0,  0,  0,  0,  0,  0,  0,  0,  26, 0,  24, 0  },
+        { 0,  0,  19, 0,  0,  0,  0,  0,  0,  27, 0,  0,  24, 0,  0  },
+        { 0,  0,  0,  36, 0,  0,  40, 0,  0,  0,  24, 0,  0,  0,  0  },
+
+    };
+
+    vector<string> vert_names = {
+        "Alpha", "Bravo", "Charlie", "Delta",
+        "Echo", "Foxtrot", "Golf", "Hotel",
+        "India", "Juliett", "Kilo", "Lima",
+        "Mike", "November", "Oscar"
     };
 
     try {
         Path path;
         vector<int> path_vec, srcdest(2);
-        string str_input;
+        string str_input, src_str, dest_str, temp_str;
+        bool hit_src, hit_dest;
+
         path.updateAdjacencyMatrix(adj_matrix);
+        int src, dest;
+
+        if (adj_matrix.size() != vert_names.size()) {
+            throw invalid_argument("SISTEM: Nama dan Vertex tidak sama besar!");
+        }
 
         cout << ">> PathNav <<\n(C) 2021 Christopher Digno\n"
-            << "Petunjuk:\n -> Masukkan dengan format source <spasi> destinasi\n"
-            << " -> Banyak vertex yang dapat dipilih adalah " << path.getVertNum() - 1 << '\n'
+            << "Selamat datang di Kota Phonetics! Petunjuk:\n"
+            << " -> Banyak vertex yang dapat dipilih adalah " << path.getVertNum() << '\n'
+            << " -> Nama-nama vertex yang dapat dipilih adalah alfabet fonetis dari Alpha (1) hingga Oscar (15)\n"
             << " -> Masukkan 0 saja untuk keluar dari program\n";
 
         while (true) {
             try {
-                int src, dest;
-                int vert_num = (int)path.getVertNum();
-
-                cout << "SRC <spasi> DEST: ";
-                getline(cin, str_input);
-
-                if (str_input[0] == '0' && str_input.size() == 1) {
+                cout << "\nKota Awal: ";
+                getline(cin, src_str);
+                if (src_str[0] == '0' && src_str.size() == 1) {
                     return 0;
                 }
 
-                srcdest = parseString(str_input);
+                cout << "Destinasi: ";
+                getline(cin, dest_str);
+                if (dest_str[0] == '0' && dest_str.size() == 1) {
+                    return 0;
+                }
 
-                for (size_t i = 0; i < srcdest.size(); i++) {
-                    if ((srcdest[i] < 0) || (srcdest[i] >= vert_num)) {
-                        throw invalid_argument("Masukan berada diluar batas!");
+                hit_src = hit_dest = false;
+                for (size_t i = 0; i < vert_names.size(); i++) {
+                    if (src_str == vert_names[i]) {
+                        hit_src = true;
+                        src = i;
+                    }
+                    if (dest_str == vert_names[i]) {
+                        hit_dest = true;
+                        dest = i;
                     }
                 }
 
-                src = srcdest[0];
-                dest = srcdest[1];
+                if (!hit_dest && !hit_src) {
+                    throw invalid_argument("Kota awal dan tujuan tidak dikenali!");
+                }
+                else if (!hit_src) {
+                    throw invalid_argument("Kota awal tidak dikenali!");
+                }
+                else if (!hit_dest) {
+                    throw invalid_argument("Kota tujuan tidak dikenali!");
+                }
+
+                if (dest == src) {
+                    throw invalid_argument("Kota awal dan Destinasi sama!");
+                }
 
                 path_vec.clear();
                 path_vec = path.getPathVec(src, dest);
 
-                cout << "Perjalanan: " << src << " => ";
+                cout << "Rute Perjalanan : " << vert_names[src] << " => ";
 
                 for (size_t i = 0; i < path_vec.size(); i++) {
-                    cout << path_vec[i] << ((i != (path_vec.size() - 1)) ? " => " : " ");
+                    cout << vert_names[path_vec[i]] << ((i != (path_vec.size() - 1)) ? " => " : " ");
                 }
 
-                cout << "\nJarak: " << path.getDistance(src, dest);
-                cout << '\n';
+                cout << "\nJarak Perjalanan: " << path.getDistance(src, dest);
+                cout << " klik\n";
             }
             catch (exception &e) {
-                cout << "Error -> " << e.what() << '\n';
+                cout << "(!)-> " << e.what() << '\n';
             }
         }
     }
@@ -197,15 +244,3 @@ int main() {
         cout << "Error -> " << e.what() << '\n';
     }
 }
-
-/*
-2 to 0             12        1 0
-2 to 1             8         1
-2 to 2             0
-2 to 3             7         3
-2 to 4             14        5 4
-2 to 5             4         5
-2 to 6             6         5 6
-2 to 7             7         5 6 7
-2 to 8             2         8
-*/
