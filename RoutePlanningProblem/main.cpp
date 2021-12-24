@@ -7,19 +7,6 @@
 #include <map>
 using namespace std;
 
-// struct Coords {
-//     int coordX, coordY;
-
-//     Coords() {
-//         coordX = coordY = 0;
-//     }
-// };
-
-// struct AdjacencyVertex {
-//     vector<int> adjacency_item;
-//     string vertex_name;
-// };
-
 struct VInfo {
     int dist, parent;
     bool is_included;
@@ -112,31 +99,6 @@ public:
     }
 };
 
-vector<int> parseString(string str) {
-    vector<int> ret_vec;
-    stringstream ss(str);
-    string token_str;
-    int token_int;
-
-    while (getline(ss, token_str, ' ')) {
-        if (!token_str.empty()) {
-            try {
-                token_int = stoi(token_str);
-                ret_vec.push_back(token_int);
-            }
-            catch (exception &e) {
-                throw invalid_argument("Tidak dapat memasukkan non-angka!");
-            }
-        }
-    }
-
-    if (ret_vec.size() != 2) {
-        throw invalid_argument("Masukan harus 2 mengandung nilai integer");
-    }
-
-    return ret_vec;
-}
-
 int main() {
     vector<vector<int>> adj_matrix = {
         { 0,  0,  21, 0,  0,  32, 17, 10, 0,  0,  20, 0,  0,  0,  0  },
@@ -153,7 +115,7 @@ int main() {
         { 0,  16, 17, 0,  30, 0,  0,  0,  0,  0,  27, 0,  26, 0,  0  },
         { 0,  13, 0,  0,  0,  0,  0,  0,  0,  0,  0,  26, 0,  24, 0  },
         { 0,  0,  19, 0,  0,  0,  0,  0,  0,  27, 0,  0,  24, 0,  0  },
-        { 0,  0,  0,  36, 0,  0,  40, 0,  0,  0,  24, 0,  0,  0,  0  },
+        { 0,  0,  0,  36, 0,  0,  40, 0,  0,  0,  24, 0,  0,  0,  0  }
 
     };
 
@@ -233,7 +195,7 @@ int main() {
                 }
 
                 cout << "\nJarak Perjalanan: " << path.getDistance(src, dest);
-                cout << " klik\n";
+                cout << " km\n";
             }
             catch (exception &e) {
                 cout << "(!)-> " << e.what() << '\n';
