@@ -112,35 +112,6 @@ public:
     }
 };
 
-// class Routes {
-// private:
-//     vector<string> cityname_vec;
-//     vector<Coords> citycoords_vec;
-
-//     bool _searchCity(string name) {
-//         for (size_t i = 0; i < cityname_vec.size(); i++) {
-//             if (name == cityname_vec[i]) return true;
-//         }
-//         return false;
-//     }
-
-// public:
-//     void addCity(string name, Coords coords) {
-//         cityname_vec.push_back(name);
-//         citycoords_vec.push_back(coords);
-//     }
-
-//     void addRoute(string lhs, string rhs) {
-//         if (!_searchCity(lhs) || !_searchCity(rhs)) {
-//             throw invalid_argument("SISTEM: Kota tidak ditemukan!");
-//         }
-//     }
-
-//     vector<vector<int>> generateAdjacencyMatrix() {
-
-//     }
-// };
-
 vector<int> parseString(string str) {
     vector<int> ret_vec;
     stringstream ss(str);
@@ -186,30 +157,12 @@ int main() {
 
     };
 
-    // vector<vector<int>> adj_matrix = {
-    //     //0   1   2   3   4   5   6   7   8
-    //     { 0,  4,  0,  0,  0,  0,  0,  8,  0 }, // 0
-    //     { 4,  0,  8,  0,  0,  0,  0,  11, 0 }, // 1
-    //     { 0,  8,  0,  7,  0,  4,  0,  0,  2 }, // 2
-    //     { 0,  0,  7,  0,  9,  14, 0,  0,  0 }, // 3
-    //     { 0,  0,  0,  9,  0,  10, 0,  0,  0 }, // 4
-    //     { 0,  0,  4,  0,  10, 0,  2,  0,  0 }, // 5
-    //     { 0,  0,  0,  14, 0,  2,  0,  1,  6 }, // 6
-    //     { 8,  11, 0,  0,  0,  0,  1,  0,  7 }, // 7
-    //     { 0,  0,  2,  0,  0,  0,  6,  7,  0 }  // 8
-    // };
-
     vector<string> vert_names = {
         "Alpha", "Bravo", "Charlie", "Delta",
         "Echo", "Foxtrot", "Golf", "Hotel",
         "India", "Juliett", "Kilo", "Lima",
         "Mike", "November", "Oscar"
     };
-
-    // vector<string> vert_names = {
-    //     "Nol", "Satu", "Dua", "Tiga", "Empat",
-    //     "Lima", "Enam", "Tujuh", "Delapan"
-    // };
 
     try {
         Path path;
